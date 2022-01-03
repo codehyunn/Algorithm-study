@@ -1,3 +1,2 @@
 # Python
-2021 Algorithm study
-백준 알고리즘 분류
+2021 Algorithm study(알고리즘분류)
