@@ -1,5 +1,6 @@
 def solution(s):
     iter_cnt, zero_cnt = 0,0
+    
     while s != "1" :
         zero = s.count("0")
         zero_cnt += zero
@@ -12,6 +13,7 @@ def solution(s):
             c, mod = divmod(c, 2)
             s += str(mod)
         s = s[::-1]
+        
         iter_cnt += 1
         
     return [iter_cnt, zero_cnt]
