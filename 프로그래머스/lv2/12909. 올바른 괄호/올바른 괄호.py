@@ -8,6 +8,4 @@ def solution(s):
         else :
             return False
 
-    if cnt != 0 :
-        return False
-    else : return True
+    return cnt == 0
