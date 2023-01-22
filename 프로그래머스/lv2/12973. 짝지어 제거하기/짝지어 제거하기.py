@@ -9,7 +9,4 @@ def solution(s):
             string.pop()
             string.pop()
     
-    if string :
-        return 0
-    else :
-        return 1
+    return int(not string)
