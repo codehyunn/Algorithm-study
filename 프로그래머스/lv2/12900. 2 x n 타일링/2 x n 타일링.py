@@ -5,4 +5,4 @@ def solution(n):
     if n >= 3 :
         for i in range(3, n+1) :
             cache[i] = (cache[i-1] + cache[i-2]) % 1000000007
-    return cache[n] % 1000000007 
+    return cache[n]
