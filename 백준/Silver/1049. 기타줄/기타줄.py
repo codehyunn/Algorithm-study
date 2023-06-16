@@ -1,7 +1,7 @@
 N, M = map(int,input().split())
 
-min_package = float('inf')
-min_one = float('inf')
+min_package = 1000
+min_one = 1000
 
 for i in range(M) :
     package, one = map(int, input().split())
