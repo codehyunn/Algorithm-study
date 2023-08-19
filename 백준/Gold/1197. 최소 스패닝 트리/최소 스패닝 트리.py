@@ -1,34 +1,43 @@
 import sys
-import heapq
 
+#sys.stdin = open('answer.txt', 'r')
 input = sys.stdin.readline
 
 vertex, edge = map(int,input().split())
 
-graph = [[] for _ in range(vertex+1)]
+parents = [i for i in range(vertex+1)]
+edges = []
+
 for _ in range(edge) :
-    a,b,c = map(int, input().split())     
-    graph[a].append((b,c))
-    graph[b].append((a,c))
+    a,b,c = map(int, input().split())        
+    edges.append((c,a,b))
 
-visited = [False for _ in range(vertex+1)]
+edges = sorted(edges, key=lambda x:x[0])
 
-queue = []
-heapq.heappush(queue, (0,1))
+
+def find_root(parents, x) :
+    if parents[x] != x :
+        parents[x] = find_root(parents, parents[x])
+    return parents[x] 
+        
+
+def union_root(parents,a,b) :
+    if a > b :
+        parents[a] = b
+    else :
+        parents[b] = a
+             
+
 answer = 0
-
-while queue : 
-    cost, v = heapq.heappop(queue)
+for edge in edges :
+    cost, a, b = edge
+    root_a = find_root(parents, a)
+    root_b = find_root(parents, b)
     
-    if visited[v] :
-        continue
+    if root_a == root_b :
+        continue 
     
-    visited[v] = True
+    union_root(parents, root_a, root_b)
     answer += cost
     
-    for x, x_cost in graph[v] :
-        if not visited[x] :
-            heapq.heappush(queue, (x_cost, x))
-
-
 print(answer)
