@@ -1,65 +1,57 @@
 import sys
-from collections import deque
 
-#sys.stdin = open('answer.txt', 'r')
 input = sys.stdin.readline
 
-field = [list(input().rstrip()) for _ in range(12)]
+board = [list(input().rstrip()) for _ in range(12)]
+visited = [[False for _ in range(6)] for _ in range(12)] 
 
-def find(x,y,visited,field) :
-    dx,dy = [1,-1,0,0],[0,0,1,-1]
-
-    queue = deque([(x,y)])
-    puyos = [(x,y)] 
+def dfs(x,y,color) :
+    global puyos     
+    puyos.append((x,y))
     
-    while queue :
-        x,y = queue.popleft()
-        for i in range(4) :
-            sx,sy = x+dx[i],y+dy[i]
-            if 0<=sx<12 and 0<=sy<6 and not visited[sx][sy] and field[x][y] == field[sx][sy] :
-                puyos.append((sx,sy))
-                queue.append((sx,sy))
-                visited[sx][sy] = True
-
-    return visited, puyos
-
-def bomb(field, puyos) :
-    for x,y in puyos :
-        field[x][y] = '.'
-    return field
-
-def down(field) :
-    dot_count = [0 for _ in range(6)]
-    for i in range(11, -1, -1) :
-        for j in range(6) :
-            if field[i][j] == '.' :
-                dot_count[j] += 1
-            if dot_count[j] and field[i][j] != '.' :
-                field[i+dot_count[j]][j] = field[i][j]
-                field[i][j] = '.'
-    return field
-
+    dx, dy = [1,-1,0,0], [0,0,-1,1]
+    for i in range(4) :
+        sx,sy = x+dx[i], y+dy[i]
+        if 0<=sx<12 and 0<=sy<6 and not visited[sx][sy] and board[sx][sy] == color:
+            visited[sx][sy] = True
+            dfs(sx,sy,color)
+            
+def delete(puyos) :
+    for (x,y) in puyos :
+        board[x][y] = '.'
+        
+def down() :
+    for j in range(6) :
+        row_count = 0
+        stop_count = False
+        for i in range(11,0,-1) :
+            if board[i][j] == '.' :
+                row_count += 1
+                if board[i-1][j] != '.' :
+                    board[i-1+row_count][j] = board[i-1][j]
+                    board[i-1][j] = '.'
+                    row_count -= 1
+        
 count = 0
 while True :
-    fin = True
-    visited = [[False for _ in range(6)] for _ in range(12)]
+    puyo_found = False
+    visited = [[False for _ in range(6)] for _ in range(12)] 
 
     for i in range(12) :
         for j in range(6) :
-            if field[i][j] == '.' and not visited[i][j]:
-                continue
-            
-            visited[i][j] = True
-            visited, puyos = find(i,j,visited,field)
-            if len(puyos) < 4 :
-                continue
-            
-            fin = False
-            field = bomb(field,puyos)
+            if not visited[i][j] and board[i][j] != '.':
+                visited[i][j] = True
+                puyos = []
+                
+                dfs(i,j,board[i][j])
+                
+                if len(puyos) >= 4 :
+                    delete(puyos)
+                    puyo_found = True
     
-    if fin :
+    if not puyo_found :
         print(count)
         exit()
         
-    field = down(field)   
+    down()
     count += 1
