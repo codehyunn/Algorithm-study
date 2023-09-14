@@ -23,7 +23,6 @@ def delete(puyos) :
 def down() :
     for j in range(6) :
         row_count = 0
-        stop_count = False
         for i in range(11,0,-1) :
             if board[i][j] == '.' :
                 row_count += 1
