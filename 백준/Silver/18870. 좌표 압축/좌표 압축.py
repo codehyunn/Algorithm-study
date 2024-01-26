@@ -1,26 +1,17 @@
 import sys 
-import heapq
 from collections import defaultdict
 
 input = sys.stdin.readline
 
 n = int(input())
 nums = list(map(int,input().split()))
-answer = [0 for _ in range(n)]
 
-count = defaultdict(list)
-for idx, num in enumerate(nums) :
-    count[num].append(idx)
+idxs = defaultdict(list)
+for i in range(n) :
+    idxs[nums[i]].append(i)
 
-queue = []
-for key, values in count.items() :
-    heapq.heappush(queue, (key, values))
+for i, num in enumerate(sorted(set(nums))) :
+    for idx in idxs[num] :
+        nums[idx] = i
 
-total = 0
-while queue :
-    _, idxs = heapq.heappop(queue)
-    for idx in idxs :
-        answer[idx] += total  
-    total += 1
-
-print(*answer)
+print(* nums)
