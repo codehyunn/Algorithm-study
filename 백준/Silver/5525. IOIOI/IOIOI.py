@@ -5,12 +5,20 @@ n = int(input())
 m = int(input())
 s = input().rstrip()
 
-answer = 0
-sn = 'IO'*n + 'I'
-lensn = 2*n+1
+before = s[0] 
+count = 0 if before == 'O' else 1
+answer = 0 
+pn = 2*n+1
 
-for i in range(m-lensn+1) :
-    if s[i:i+lensn] == sn :
+for i in range(1, m) :
+    if before == s[i] :
+        count = 0 if before == 'O' else 1
+        continue
+    
+    before = s[i]
+    count += 1
+    if count == pn : 
         answer += 1
+        count -= 2
         
 print(answer)
