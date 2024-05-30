@@ -5,7 +5,7 @@ def solution(priorities, location):
     answer = []
     
     priorities = deque(priorities)
-    order = deque([i for i in range(1, n_process+1)])
+    order = deque([i for i in range(n_process)])
         
     while len(answer) < n_process :
         x = priorities.popleft()
@@ -24,4 +24,4 @@ def solution(priorities, location):
         else :
             answer.append(y)
 
-    return answer.index(location+1)+1
+    return answer.index(location)+1
