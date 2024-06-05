@@ -1,4 +1,5 @@
 from collections import deque
+
 def solution(prices):
     answer = []
     prices = deque(prices)
